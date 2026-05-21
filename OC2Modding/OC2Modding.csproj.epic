@@ -27,27 +27,27 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine.CoreModule">
-        <HintPath>..\lib\UnityEngine.CoreModule.dll </HintPath>
+        <HintPath>..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine.PhysicsModule">
-        <HintPath>..\lib\UnityEngine.PhysicsModule.dll </HintPath>
+        <HintPath>..\lib\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine.TextRenderingModule">
-        <HintPath>..\lib\UnityEngine.TextRenderingModule.dll </HintPath>
+        <HintPath>..\lib\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine.UI">
-        <HintPath>..\lib\UnityEngine.UI.dll </HintPath>
+        <HintPath>..\lib\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine.UIModule">
-        <HintPath>..\lib\UnityEngine.UIModule.dll </HintPath>
+        <HintPath>..\lib\UnityEngine.UIModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
