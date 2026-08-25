@@ -216,14 +216,15 @@ namespace OC2Modding
                 return; // no new data to send
             }
 
-            LastVisitedLocationsCount = count;
             OC2Modding.Log.LogInfo($"Syncing Collected Locations with remote...");
             try
             {
                 session.Locations.CompleteLocationChecks(VisitedLocations.ToArray());
+                LastVisitedLocationsCount = count;
             }
             catch
             {
+                PendingLocationUpdate = true;
                 OC2Modding.Log.LogError("CompleteLocationChecks failed");
             }
         }
@@ -762,6 +763,64 @@ namespace OC2Modding
 
         private static List<long> VisitedLocations = new List<long>();
 
+        private const int STAR_LOCATION_OFFSET_2 = 100;
+        private const int STAR_LOCATION_OFFSET_3 = 200;
+
+        private static bool IsValidStarLocationId(long locationId)
+        {
+            if (locationId >= 1 && locationId <= 44)
+            {
+                return locationId != 36;
+            }
+
+            if (locationId >= STAR_LOCATION_OFFSET_2 + 1 && locationId <= STAR_LOCATION_OFFSET_2 + 44)
+            {
+                return locationId != STAR_LOCATION_OFFSET_2 + 36;
+            }
+
+            if (locationId >= STAR_LOCATION_OFFSET_3 + 1 && locationId <= STAR_LOCATION_OFFSET_3 + 44)
+            {
+                return locationId != STAR_LOCATION_OFFSET_3 + 36;
+            }
+
+            return false;
+        }
+
+        public static long LevelStarLocationId(int levelId, int stars)
+        {
+            if (stars <= 1)
+            {
+                return levelId;
+            }
+
+            if (stars == 2)
+            {
+                return STAR_LOCATION_OFFSET_2 + levelId;
+            }
+
+            return STAR_LOCATION_OFFSET_3 + levelId;
+        }
+
+        public static void VisitLevelStars(int levelId, int stars)
+        {
+            if (levelId == 36 && stars >= 1)
+            {
+                PendingSendCompletion = true;
+                return;
+            }
+
+            if (levelId < 1 || levelId > 44 || levelId == 36)
+            {
+                return;
+            }
+
+            int clampedStars = Math.Max(1, Math.Min(3, stars));
+            for (int s = 1; s <= clampedStars; s++)
+            {
+                VisitLocation(LevelStarLocationId(levelId, s));
+            }
+        }
+
         public static void VisitLocation(long location)
         {
             if (location == 36)
@@ -769,7 +828,7 @@ namespace OC2Modding
                 PendingSendCompletion = true;
             }
 
-            if (location < 1 || location > 44)
+            if (!IsValidStarLocationId(location))
             {
                 return; // Don't care about this level
             }

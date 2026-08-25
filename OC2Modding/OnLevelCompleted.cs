@@ -41,13 +41,18 @@ namespace OC2Modding
                 return; // 0 stars on non-horde
             }
 
-            ArchipelagoClient.VisitLocation(_levelIndex);
+            ArchipelagoClient.VisitLevelStars(_levelIndex, _starRating);
 
             GameProgress.GameProgressData.LevelProgress levelProgress = _saveData.GetLevelProgress(_levelIndex);
             if (!OC2Config.Config.PseudoSave.ContainsKey(_levelIndex) || _starRating > OC2Config.Config.PseudoSave[_levelIndex]) {
                 // Update "cloud save"
                 OC2Config.Config.PseudoSave[_levelIndex] = _starRating;
                 ArchipelagoClient.SendPseudoSave();
+            }
+
+            if (ArchipelagoClient.REMOTE_INVENTORY && ArchipelagoClient.IsConnected)
+            {
+                _starRating = 0;
             }
 
             bool first_completion = levelProgress == null || levelProgress.LevelId == -1;

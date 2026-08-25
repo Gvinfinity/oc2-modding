@@ -15,10 +15,12 @@ namespace OC2Modding
 
         public static bool IsLevelCompleted(int levelId)
         {
-            bool result = GameUtils.GetGameSession().Progress.SaveData.GetLevelProgress(levelId).Completed;
+            GameProgress.GameProgressData.LevelProgress levelProgress = GameUtils.GetGameSession().Progress.SaveData.GetLevelProgress(levelId);
+            bool result = levelProgress.Completed;
             if (result && OC2Helpers.GetCurrentDLCID() == -1)
             {
-                ArchipelagoClient.VisitLocation(levelId);
+                int stars = Mathf.Max(1, levelProgress.ScoreStars);
+                ArchipelagoClient.VisitLevelStars(levelId, stars);
             }
             return result;
         }
@@ -43,7 +45,8 @@ namespace OC2Modding
             {
                 if (Levels[levelId].Completed)
                 {
-                    ArchipelagoClient.VisitLocation(levelId);
+                    int stars = Mathf.Max(1, Levels[levelId].ScoreStars);
+                    ArchipelagoClient.VisitLevelStars(levelId, stars);
                 }
             }
         }
@@ -97,7 +100,8 @@ namespace OC2Modding
 
                 if (__result.Completed)
                 {
-                    ArchipelagoClient.VisitLocation(_id);
+                    int stars = Mathf.Max(1, __result.ScoreStars);
+                    ArchipelagoClient.VisitLevelStars(_id, stars);
                 }
 
                 if (OC2Config.Config.PseudoSave.ContainsKey(_id))
