@@ -19,6 +19,8 @@ command -v curl >/dev/null 2>&1 || {
 
 mkdir -p "${DIST_DIR}" "${ROOT_DIR}/release"
 
+"${SCRIPT_DIR}/fetch-deps.sh"
+
 cp "${SRC_DIR}/OC2Modding.csproj.epic" "${SRC_DIR}/OC2Modding.csproj"
 (
     cd "${SRC_DIR}"
